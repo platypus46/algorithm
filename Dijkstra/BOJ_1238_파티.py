@@ -1,43 +1,46 @@
-import sys
 import heapq
+import sys
 
-inf = sys.maxsize
-graph = [[]]
+inf=sys.maxsize
 
-def dijkstra(s, e):
-    global graph
-    table = [inf]*(N+1)
-    table[s] = 0
-    queue = [[0, s]]
+N,M,X=map(int,input().split())
 
-    while queue:
-        cost, node = heapq.heappop(queue)
+graph=[[] for _ in range(N+1)]
 
-        if table[node] < cost:
+for _ in range(M):
+    a,b,c=map(int,input().split())
+
+    graph[a].append((b,c))
+
+def dijkstra(s):
+    distance = [inf] * (N + 1)
+    q=[]
+    heapq.heappush(q,(0,s))
+    distance[s]=0
+
+    while q:
+        dist,now=heapq.heappop(q)
+
+        if distance[now]<dist:
             continue
+        for i in graph[now]:
+            cost=dist+i[1]
 
-        for n,c in graph[node]:
-            c += cost
-            if c < table[n]:
-                table[n] = c
-                heapq.heappush(queue, [c, n])
+            if cost<distance[i[0]]:
+                distance[i[0]]=cost
+                heapq.heappush(q,(cost,i[0]))
 
-    return table[e]
+    return distance
 
+start=[]
+for i in range(1,N+1):
+    start.append(dijkstra(i)[X])
 
-def solution(n, s, a, b, fares):
+end=dijkstra(X)[1:]
 
-    global graph,N
-    N=n
-    graph = [[] for _ in range(n + 1)]
+res=0
 
-    for i, j, k in fares:
-        graph[i].append((j, k))
-        graph[j].append((i, k))
+for a,b in zip(start,end):
+    res=max(a+b,res)
 
-    cost = inf
-
-    for i in range(1,n+1):
-        cost = min(cost, dijkstra(s, i) + dijkstra(i, a) + dijkstra(i, b))
-
-    return cost
+print(res)
