@@ -1,15 +1,14 @@
-﻿using System;
-
-public class Solution
+﻿public class Solution
 {
-    public static string solution(int a, int b)
+    public string solution(string s)
     {
-        DateTime dateValue = new DateTime(2016, a, b);
-        return dateValue.DayOfWeek.ToString();
-    }
-
-    static void Main(string[] args)
-    {
-        Console.WriteLine(solution(5, 24));
+        if (s.Length % 2 == 0)
+        {
+            return s[s.Length / 2 - 1].ToString() + s[s.Length / 2].ToString();
+        }
+        else
+        {
+            return s[s.Length / 2].ToString();
+        }
     }
 }
