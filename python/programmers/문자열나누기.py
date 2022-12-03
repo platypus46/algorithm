@@ -1,13 +1,26 @@
-def solution(k, score):
-    answer = []
+from collections import deque
 
-    for i in range(len(score)):
-        ls = score[:i + 1]
-        if len(ls) <= k:
-            ls.sort()
-            answer.append(ls[0])
-        else:
-            ls.sort()
-            answer.append(ls[-k])
+def solution(s):
+    s = deque(list(s))
 
-    return answer
+    cnt=0
+
+    c_1=0
+    c_2=0
+    if len(s)!=0:
+        cnt+=1
+    while s:
+        alphabet=s.popleft()
+        c_1+=1
+        while s:
+            if c_1==c_2:
+                cnt+=1
+                break
+            if alphabet==s[0]:
+                c_1+=1
+                s.popleft()
+            elif alphabet!=s[0]:
+                c_2+=1
+                s.popleft()
+
+    return cnt
